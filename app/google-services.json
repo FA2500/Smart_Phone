@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "52384160525",
+    "project_id": "smart-hotel-d3cca",
+    "storage_bucket": "smart-hotel-d3cca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52384160525:android:dad186410fa721395dee44",
+        "android_client_info": {
+          "package_name": "com.example.smart_phone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52384160525-5crhp6lgr7isr1tm3a094tlh9o0lr9av.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smart_phone",
+            "certificate_hash": "f56c9b1fc9e47529489ac87615ca959645c3a3b7"
+          }
+        },
+        {
+          "client_id": "52384160525-bag9dmca3neo1rp35dspfpqnbv75s3ci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDycwsbynrUwJWaoQC_EgRqt4qK83e_S-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52384160525-bag9dmca3neo1rp35dspfpqnbv75s3ci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
