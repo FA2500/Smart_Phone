@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,10 +106,21 @@ public class MainActivity extends AppCompatActivity {
             biometricPrompt.authenticate(promptInfo);
         });
 
-        Button googleSignButton = findViewById(R.id.googleSign);
+        /*Button googleSignButton = findViewById(R.id.googleSign);
         googleSignButton.setOnClickListener(view -> {
             createSignInIntent();
+        });#*/
+
+        Button googleSignButton = findViewById(R.id.googleSign);
+        googleSignButton.setOnClickListener(view -> {
+            goToEmail(view);
         });
+    }
+
+    private void goToEmail(View v)
+    {
+        Intent i = new Intent(MainActivity.this, Email_login.class);
+        startActivity(i);
     }
 
 

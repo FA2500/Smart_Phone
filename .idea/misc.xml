@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Smart_Phone/app/src/main/res/layout/activity_email_login.xml" value="0.2" />
+        <entry key="..\:/Smart_Phone/app/src/main/res/layout/activity_email_register.xml" value="0.24547101449275363" />
         <entry key="..\:/Smart_Phone/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Smart_Phone/app/src/main/res/layout/activity_splash_screen.xml" value="0.24547101449275363" />
       </map>
     </option>
   </component>
