@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         initializeUI();
+        biometricLogin();
         initializeGoogle();
         initializeFacebook();
 
@@ -146,13 +147,16 @@ public class MainActivity extends AppCompatActivity {
         //Initialize Biometric
         Button biometricLoginButton = findViewById(R.id.biometric_login);
         biometricLoginButton.setOnClickListener(view -> {
-            biometricPrompt.authenticate(promptInfo);
+
         });
+
         //Initialize Google Sign in
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(view -> {
+
             googleLogin();
         });
+
         //Initialize FaceBook Sign In
         LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
         loginButton.setReadPermissions(Arrays.asList("email","public_profile"));
@@ -176,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         loginButton.setOnClickListener(view -> {
+
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         });
 
@@ -184,9 +189,11 @@ public class MainActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(view -> {
             goToRegister();
         });
+
         //Initialize Email Login Button
         Button loginBtn = findViewById(R.id.loginBtnL);
         loginBtn.setOnClickListener(view -> {
+
             emailLogin();
         });
     }

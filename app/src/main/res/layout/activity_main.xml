@@ -24,8 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginBottom="212dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,8 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="71dp"
+        android:layout_marginEnd="124dp"
+        android:layout_marginBottom="152dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -69,8 +69,8 @@
         android:id="@+id/textView3"
         android:layout_width="288dp"
         android:layout_height="30dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="44dp"
         android:text="or login with"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
@@ -106,19 +106,9 @@
         android:id="@+id/loginBtnL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="155dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
         android:text="Sign in"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETLPass" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="92dp"
-        android:text="Forgot Password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ETLPass" />
 
@@ -126,8 +116,8 @@
         android:id="@+id/registerBtnL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="92dp"
         android:text="Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ETLPass" />
