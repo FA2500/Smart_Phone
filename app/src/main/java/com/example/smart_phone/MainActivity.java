@@ -66,32 +66,101 @@ public class MainActivity extends AppCompatActivity {
     //One-Tap
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
+    private static final int REQ_ONE_TAP = 2;
 
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
 
+    //One Tap
+
+    //otv2
+    private SignInClient oneTapClient;
+    private BeginSignInRequest signInRequest;
+    //otv2
+
+    private SignInButton btSignIn;
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient googleSignInClient;
+    private SignInButton btSignInn;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FirebaseApp.initializeApp(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mStatusTextView = findViewById(R.id.textView);
 
-        //Google Sign In Req
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+
+        mStatusTextView = findViewById(R.id.textView);
+        mAuth = FirebaseAuth.getInstance();
+
+        //otv2
+        //oneTapClient = Identity.getSignInClient(this);
+        /*signInRequest = BeginSignInRequest.builder()
+                .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
+                        .setSupported(true)
+                        .build())
+                .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        // Your server's client ID, not your Android client ID.
+                        .setServerClientId(getString(R.string.default_web_client_id))
+                        // Only show accounts previously used to sign in.
+                        .setFilterByAuthorizedAccounts(true)
+                        .build())
+                // Automatically sign in when exactly one credential is retrieved.
+                .setAutoSelectEnabled(true)
+                .build();*/
+        GoogleSignInOptions googleSignInOptions=new GoogleSignInOptions.Builder(
+                GoogleSignInOptions.DEFAULT_SIGN_IN
+        ).requestIdToken("52384160525-3vqu5q7smnvr50171ai2c71l2crlpofe.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
+        googleSignInClient= GoogleSignIn.getClient(MainActivity.this
+                ,googleSignInOptions);
+
+        /*btSignIn.(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Initialize sign in intent
+                Intent intent=googleSignInClient.getSignInIntent();
+                // Start activity for result
+                startActivityForResult(intent,100);
+            }
+        });*/
+
+
+       /* Log.d("TEST","TEST");
+        signInRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        // Your server's client ID, not your Android client ID.
+                        .setServerClientId(getString(R.string.default_web_client_id))
+                        // Only show accounts previously used to sign in.
+                        .setFilterByAuthorizedAccounts(true)
+                        .build())
+                .build();
+        Log.d("TEST", String.valueOf(signInRequest));*/
+
+
+        //otv2
+
+        //Google Sign In Req
+        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken()
+                .requestEmail()
+                .build();*/
+
         //Google Sign In Client
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        //mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //Google Sign In Button
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
+        //SignInButton signInButton = findViewById(R.id.sign_in_button);
+        //signInButton.setSize(SignInButton.SIZE_STANDARD);
+        //signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
 
-        signInButton.setOnClickListener(this::signIn);
+        //signInButton.setOnClickListener(this::signIn);
 
         executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(MainActivity.this,
@@ -150,9 +219,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        FirebaseApp.initializeApp(this);
         //Determine if user already registered in this app
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
+        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+       // FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(account);
     }
 
     @Override
@@ -161,6 +232,37 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+        }
+        if(requestCode == REQ_ONE_TAP)
+        {
+            Log.d("GOOGLE","GOOGLE SIGN IN");
+            try {
+                SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
+                String idToken = credential.getGoogleIdToken();
+                if (idToken !=  null) {
+                    AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+                    mAuth.signInWithCredential(firebaseCredential)
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "signInWithCredential:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        //updateUI(user);
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                        //updateUI(null);
+                                    }
+                                }
+                            });
+                    Log.d(TAG, "Got ID token.");
+                }
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

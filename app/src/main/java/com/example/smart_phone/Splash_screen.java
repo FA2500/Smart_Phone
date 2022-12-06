@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
+
 public class Splash_screen extends AppCompatActivity {
 
     ImageView Img;
@@ -32,7 +34,7 @@ public class Splash_screen extends AppCompatActivity {
         Img.startAnimation(anime);
         Txt.startAnimation(anime);
 
-        Intent i = new Intent(this , MainActivity.class);
+        Intent i = new Intent(this , MainActivity3.class);
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
