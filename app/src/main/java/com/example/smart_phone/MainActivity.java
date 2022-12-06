@@ -22,6 +22,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
@@ -49,9 +51,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 
@@ -59,30 +67,24 @@ import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Biometric Auth
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
 
-    //One-Tap
-    private static final String TAG = "SignInActivity";
-    private static final int RC_SIGN_IN = 9001;
-    private static final int REQ_ONE_TAP = 2;
-
-    private GoogleSignInClient mGoogleSignInClient;
-    private TextView mStatusTextView;
-
-    //One Tap
-
-    //otv2
+    //Google Auth
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient mSignInClient;
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
-    //otv2
+    private static final int RC_SIGN_IN = 1;
 
-    private SignInButton btSignIn;
-    private FirebaseAuth mAuth;
-    private GoogleSignInClient googleSignInClient;
-    private SignInButton btSignInn;
+    //Email Auth
+    private EditText email;
+    private EditText pass;
 
+    //Firebase firestore
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,14 +92,50 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        mStatusTextView = findViewById(R.id.textView);
         mAuth = FirebaseAuth.getInstance();
 
-        //otv2
-        //oneTapClient = Identity.getSignInClient(this);
-        /*signInRequest = BeginSignInRequest.builder()
+        initializeUI();
+        initializeGoogle();
+
+    }
+
+    private void initializeUI()
+    {
+        email = findViewById(R.id.ETLEmail);
+        pass = findViewById(R.id.ETLPass);
+
+        //Initialize Biometric
+        Button biometricLoginButton = findViewById(R.id.biometric_login);
+        biometricLoginButton.setOnClickListener(view -> {
+            biometricPrompt.authenticate(promptInfo);
+        });
+        //Initialize Google Sign in
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(view -> {
+            googleLogin();
+        });
+        //Initialize Register Button
+        Button registerBtn = findViewById(R.id.registerBtnL);
+        registerBtn.setOnClickListener(view -> {
+            goToRegister();
+        });
+        //Initialize Email Login Button
+        Button loginBtn = findViewById(R.id.loginBtnL);
+        loginBtn.setOnClickListener(view -> {
+            emailLogin();
+        });
+    }
+
+    private void initializeGoogle()
+    {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mSignInClient = GoogleSignIn.getClient(this, gso);
+        oneTapClient = Identity.getSignInClient(this);
+        signInRequest = BeginSignInRequest.builder()
                 .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
                         .setSupported(true)
                         .build())
@@ -110,58 +148,19 @@ public class MainActivity extends AppCompatActivity {
                         .build())
                 // Automatically sign in when exactly one credential is retrieved.
                 .setAutoSelectEnabled(true)
-                .build();*/
-        GoogleSignInOptions googleSignInOptions=new GoogleSignInOptions.Builder(
-                GoogleSignInOptions.DEFAULT_SIGN_IN
-        ).requestIdToken("52384160525-3vqu5q7smnvr50171ai2c71l2crlpofe.apps.googleusercontent.com")
-                .requestEmail()
                 .build();
+    }
 
-        googleSignInClient= GoogleSignIn.getClient(MainActivity.this
-                ,googleSignInOptions);
-
-        /*btSignIn.(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Initialize sign in intent
-                Intent intent=googleSignInClient.getSignInIntent();
-                // Start activity for result
-                startActivityForResult(intent,100);
-            }
-        });*/
+    private void googleLogin()
+    {
+        Intent intent = mSignInClient.getSignInIntent();
+        startActivityForResult(intent, RC_SIGN_IN);
+    }
 
 
-       /* Log.d("TEST","TEST");
-        signInRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        // Your server's client ID, not your Android client ID.
-                        .setServerClientId(getString(R.string.default_web_client_id))
-                        // Only show accounts previously used to sign in.
-                        .setFilterByAuthorizedAccounts(true)
-                        .build())
-                .build();
-        Log.d("TEST", String.valueOf(signInRequest));*/
-
-
-        //otv2
-
-        //Google Sign In Req
-        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken()
-                .requestEmail()
-                .build();*/
-
-        //Google Sign In Client
-        //mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        //Google Sign In Button
-        //SignInButton signInButton = findViewById(R.id.sign_in_button);
-        //signInButton.setSize(SignInButton.SIZE_STANDARD);
-        //signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
-
-        //signInButton.setOnClickListener(this::signIn);
-
+    private void biometricLogin()
+    {
+        //Biometric
         executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(MainActivity.this,
                 executor, new BiometricPrompt.AuthenticationCallback() {
@@ -196,133 +195,184 @@ public class MainActivity extends AppCompatActivity {
                 .setSubtitle("Log in using your biometric credential")
                 .setNegativeButtonText("Use account password")
                 .build();
+    }
 
-        // Prompt appears when user clicks "Log in".
-        // Consider integrating with the keystore to unlock cryptographic operations,
-        // if needed by your app.
-        Button biometricLoginButton = findViewById(R.id.biometric_login);
-        biometricLoginButton.setOnClickListener(view -> {
-            biometricPrompt.authenticate(promptInfo);
-        });
+    private void emailLogin()
+    {
+        //validate input
+        if(email.getText().toString().isEmpty())
+        {
+            Toast.makeText(this, "Email field must not be empty", Toast.LENGTH_SHORT).show();
+        }
+        else if(pass.getText().toString().isEmpty())
+        {
+            Toast.makeText(this, "Password field must not be empty", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            mAuth.signInWithEmailAndPassword(email.getText().toString(), pass.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful())
+                            {
+                                DocumentReference docRef = db.collection("users").document(mAuth.getUid());
+                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                                userInfo.email = document.get("Email").toString();
+                                                userInfo.name = document.get("Name").toString();
+                                                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                                                startActivity(intent);
+                                            } else {
+                                                Log.d(TAG, "No such document");
+                                                Toast.makeText(MainActivity.this, "Account doesn't exist", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Log.d(TAG, "get failed with ", task.getException());
+                                        }
+                                    }
+                                });
 
-        /*Button googleSignButton = findViewById(R.id.googleSign);
-        googleSignButton.setOnClickListener(view -> {
-            createSignInIntent();
-        });#*/
+                            }
+                            else
+                            {
+                                Toast.makeText(MainActivity.this, "Login failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
 
-        Button googleSignButton = findViewById(R.id.googleSign);
-        googleSignButton.setOnClickListener(view -> {
-            goToEmail(view);
-        });
+    private void goToRegister()
+    {
+        Intent intent = new Intent(MainActivity.this, Email_register.class);
+        startActivity(intent);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         FirebaseApp.initializeApp(this);
-        //Determine if user already registered in this app
-        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-       // FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(account);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        //TO BE DELETE
+        //mAuth.signOut();
+        //TO BE DELETE
+
+        if(currentUser != null)
+        {
+            DocumentReference docRef = db.collection("users").document(currentUser.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            userInfo.email = document.get("Email").toString();
+                            userInfo.name = document.get("Name").toString();
+                            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+            //Log.d("TEST", currentUser.getEmail());
+
+        }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-        if(requestCode == REQ_ONE_TAP)
-        {
-            Log.d("GOOGLE","GOOGLE SIGN IN");
-            try {
-                SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
-                String idToken = credential.getGoogleIdToken();
-                if (idToken !=  null) {
-                    AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
-                    mAuth.signInWithCredential(firebaseCredential)
-                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d(TAG, "signInWithCredential:success");
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        //updateUI(user);
-                                    } else {
-                                        // If sign in fails, display a message to the user.
-                                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                                        //updateUI(null);
-                                    }
-                                }
-                            });
-                    Log.d(TAG, "Got ID token.");
+
+        switch (requestCode) {
+            case RC_SIGN_IN:
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                try{
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    firebaseAuthGoogle(account);
                 }
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-
+                catch (ApiException e)
+                {
+                    Log.w("TEST", "Failed", e);
+                }
         }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            updateUI(account);
-        } catch (ApiException e) {
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
-        }
-    }
-
-    private void updateUI(@Nullable GoogleSignInAccount account) {
-        if (account != null) {
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
-
-            //findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-        } else {
-            mStatusTextView.setText(R.string.signed_out);
-
-            //findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
-        }
-    }
-
-    private void signIn(View v) {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        updateUI(null);
-                        // [END_EXCLUDE]
-                    }
+    private void firebaseAuthGoogle(GoogleSignInAccount acct)
+    {
+        AuthCredential cred = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
+        mAuth.signInWithCredential(cred)
+                .addOnSuccessListener(this,authResult -> {
+                    getDataFromFirebase(acct);
+                })
+                .addOnFailureListener(this, e -> {
+                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 });
     }
 
-    private void goToEmail(View v)
+    private void getDataFromFirebase(GoogleSignInAccount acct)
     {
-        Intent i = new Intent(MainActivity.this, Email_login.class);
-        startActivity(i);
+        @SuppressWarnings("ConstantConditions")
+        DocumentReference docRef = db.collection("users").document(mAuth.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("TEST", "DocumentSnapshot data: " + document.getData());
+                        userInfo.email = document.get("Email").toString();
+                        userInfo.name = document.get("Name").toString();
+                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        startActivity(intent);
+                       // userInfo.registeredTime = document.get("Email").toDate();
+
+                    } else {
+                        Log.d("TEST", "No such document");
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("Email", acct.getEmail());
+                        user.put("Name", acct.getDisplayName());
+                        user.put("createdAt", FieldValue.serverTimestamp());
+                        db.collection("users").document(mAuth.getUid())
+                                .set(user)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful())
+                                        {
+                                            userInfo.email = document.get("Email").toString();
+                                            userInfo.name = document.get("Name").toString();
+                                            Toast.makeText(MainActivity.this, "Successfully Register.", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                                            startActivity(intent);
+                                        }
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(MainActivity.this, "Failed to register. Please try again.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                } else {
+                    Log.d("TEST", "get failed with ", task.getException());
+                }
+            }
+        });
     }
-
-
-
-
-
-
-
-
-
-
-    //test
 
 
 
