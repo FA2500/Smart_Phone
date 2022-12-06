@@ -13,4 +13,10 @@
     <string name="signed_out">Signed out</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="default_web_client_id">52384160525-e1d2i7jva8ed58so0nvp32emk9favddm.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">2124562481064700</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">13ee2138c467477f2a0921ff7fd754aa</string>
+
+
 </resources>
