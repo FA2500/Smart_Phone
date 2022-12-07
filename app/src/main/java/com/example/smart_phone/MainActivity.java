@@ -53,6 +53,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
@@ -61,6 +62,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -99,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
     //Facebook
     CallbackManager callbackManager;
 
+    //Twitter
+    OAuthProvider.Builder provider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -134,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         biometricLogin();
         initializeGoogle();
         initializeFacebook();
+        initializeTwitter();
 
 
 
@@ -150,6 +156,12 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        //Initializa Twitter Sign in
+        Button twitterLoginbtn = findViewById(R.id.twitter_login_btn);
+        twitterLoginbtn.setOnClickListener(view -> {
+            twitterLogin();
+        });
+
         //Initialize Google Sign in
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(view -> {
@@ -159,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Initialize FaceBook Sign In
         LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
-        loginButton.setReadPermissions(Arrays.asList("email","public_profile"));
+        loginButton.setReadPermissions(Arrays.asList("email","public_profile","user_friends"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -180,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         loginButton.setOnClickListener(view -> {
-
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         });
 
@@ -216,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                         // Your server's client ID, not your Android client ID.
                         .setServerClientId(getString(R.string.default_web_client_id))
                         // Only show accounts previously used to sign in.
-                        .setFilterByAuthorizedAccounts(true)
+                        .setFilterByAuthorizedAccounts(false)
                         .build())
                 // Automatically sign in when exactly one credential is retrieved.
                 .setAutoSelectEnabled(true)
@@ -227,6 +238,56 @@ public class MainActivity extends AppCompatActivity {
     {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+    }
+
+    private void initializeTwitter()
+    {
+        provider = OAuthProvider.newBuilder("twitter.com");
+    }
+
+    private void twitterLogin()
+    {
+        Task<AuthResult> pendingResultTask = mAuth.getPendingAuthResult();
+        if (pendingResultTask != null) {
+            // There's something already here! Finish the sign-in for your user.
+            pendingResultTask
+                    .addOnSuccessListener(
+                            new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    // User is signed in.
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    getDataFromFirebase(user);
+                                }
+                            })
+                    .addOnFailureListener(
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle failure.
+                                    Log.w("TWIT","PENDING ERR",e);
+                                    Toast.makeText(MainActivity.this, "Failed Pending", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+        } else {
+            mAuth.startActivityForSignInWithProvider(this,provider.build())
+                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            //get ID
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            getDataFromFirebase(user);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //faild
+                            Log.w("TWIT","LOGIN ERR",e);
+                            Toast.makeText(MainActivity.this, "Failed Login", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     private void googleLogin()
@@ -371,8 +432,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
             case RC_SIGN_IN:
@@ -456,8 +517,8 @@ public class MainActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful())
                                         {
-                                            userInfo.email = document.get("Email").toString();
-                                            userInfo.name = document.get("Name").toString();
+                                            userInfo.email = acct.getEmail();
+                                            userInfo.name = acct.getDisplayName();
                                             Toast.makeText(MainActivity.this, "Successfully Register.", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                                             startActivity(intent);

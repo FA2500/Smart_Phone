@@ -7,40 +7,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.text.SimpleDateFormat;
-
-public class ProfileActivity extends AppCompatActivity {
-
-    //TextView
-    private TextView nameTV;
-    private TextView emailTV;
-    private TextView registerTV;
-
-    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+public class RoomActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_room);
 
         initializeUI();
-        getData();
     }
 
     private void initializeUI()
     {
-        nameTV = findViewById(R.id.proName);
-        emailTV = findViewById(R.id.proEmail);
-        //registerTV = findViewById(R.id.proRegister);
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.profile);
+        bottomNavigationView.setSelectedItemId(R.id.room);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -53,8 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.d("NAV","BOOKING");
                         return true;
                     case R.id.room:
-                        startActivity(new Intent(getApplicationContext(),RoomActivity.class));
-                        overridePendingTransition(0,0);
                         Log.d("NAV","ROOM");
                         return true;
                     case R.id.service:
@@ -63,18 +45,13 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.d("NAV","SERVICE");
                         return true;
                     case R.id.profile:
+                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        overridePendingTransition(0,0);
                         Log.d("NAV","PROFILE");
                         return true;
                 }
                 return false;
             }
         });
-    }
-
-    private void getData()
-    {
-        nameTV.setText(userInfo.name);
-        emailTV.setText(userInfo.email);
-        //registerTV.setText(sdf.format(userInfo.registeredTime));
     }
 }
