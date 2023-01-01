@@ -37,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
     {
         nameTV = findViewById(R.id.proName);
         emailTV = findViewById(R.id.proEmail);
-        //registerTV = findViewById(R.id.proRegister);
+        registerTV = findViewById(R.id.proRegister);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.profile);
@@ -76,5 +76,6 @@ public class ProfileActivity extends AppCompatActivity {
         nameTV.setText(userInfo.name);
         emailTV.setText(userInfo.email);
         //registerTV.setText(sdf.format(userInfo.registeredTime));
+       // Log.d("TEST", userInfo.registeredTime.toString());
     }
 }

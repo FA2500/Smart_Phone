@@ -400,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //TO BE DELETE
-        mAuth.signOut();
+        //mAuth.signOut();
         //TO BE DELETE
 
         if(currentUser != null)
