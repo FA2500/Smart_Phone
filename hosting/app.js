@@ -1,3 +1,4 @@
+
 const Billplz = require('billplz');
 const billplz = new Billplz({
     'key': 'bd3b9b73-7ae2-4c9c-8a37-b2382854556d',
@@ -6,7 +7,13 @@ const billplz = new Billplz({
 
 var info = {};
 
-billplz.create_bill({
+window.onload = function() {
+  getBill();
+};
+
+function getBill()
+{
+  billplz.create_bill({
     'collection_id': 'hr10bp8q',
     'description': 'Mee Segera Sedap 200g',
     'email': 'sukamakan@meesegera.com',
@@ -19,3 +26,7 @@ billplz.create_bill({
     //info['url'] = res.url;
     console.log(res.url);
   });
+
+  return res.url;
+}
+

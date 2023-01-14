@@ -117,9 +117,9 @@ public class Email_register extends AppCompatActivity {
         user.put("Name", name.getText().toString());
         user.put("createdAt", FieldValue.serverTimestamp());
 
-        userInfo.UID = fbuser.getUid();
-        userInfo.email = email.getText().toString();
-        userInfo.name = name.getText().toString();
+        userInfo.setUID(fbuser.getUid());
+        userInfo.setEmail(email.getText().toString());
+        userInfo.setName(name.getText().toString());
 
         //send data to firestore
         db.collection("users").document(fbuser.getUid())

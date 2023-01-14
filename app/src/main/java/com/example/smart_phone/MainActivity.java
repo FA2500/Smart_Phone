@@ -363,8 +363,8 @@ public class MainActivity extends AppCompatActivity {
                                             DocumentSnapshot document = task.getResult();
                                             if (document.exists()) {
                                                 Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                                userInfo.email = document.get("Email").toString();
-                                                userInfo.name = document.get("Name").toString();
+                                                userInfo.setEmail(document.get("Email").toString());
+                                                userInfo.setName(document.get("Name").toString());
                                                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                                                 startActivity(intent);
                                             } else {
@@ -413,8 +413,8 @@ public class MainActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            userInfo.email = document.get("Email").toString();
-                            userInfo.name = document.get("Name").toString();
+                            userInfo.setEmail(document.get("Email").toString());
+                            userInfo.setName(document.get("Name").toString());
                             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                             startActivity(intent);
                         } else {
@@ -498,8 +498,8 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d("TEST", "DocumentSnapshot data: " + document.getData());
-                        userInfo.email = document.get("Email").toString();
-                        userInfo.name = document.get("Name").toString();
+                        userInfo.setEmail(document.get("Email").toString());
+                        userInfo.setName(document.get("Name").toString());
                         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                         startActivity(intent);
                        // userInfo.registeredTime = document.get("Email").toDate();
@@ -517,8 +517,8 @@ public class MainActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful())
                                         {
-                                            userInfo.email = acct.getEmail();
-                                            userInfo.name = acct.getDisplayName();
+                                            userInfo.setEmail(acct.getEmail());
+                                            userInfo.setName(acct.getDisplayName());
                                             Toast.makeText(MainActivity.this, "Successfully Register.", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                                             startActivity(intent);

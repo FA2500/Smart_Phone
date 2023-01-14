@@ -73,8 +73,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void getData()
     {
-        nameTV.setText(userInfo.name);
-        emailTV.setText(userInfo.email);
+        nameTV.setText(userInfo.getName());
+        emailTV.setText(userInfo.getEmail());
         //registerTV.setText(sdf.format(userInfo.registeredTime));
        // Log.d("TEST", userInfo.registeredTime.toString());
     }
