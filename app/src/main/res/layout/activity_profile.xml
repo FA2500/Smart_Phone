@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity"
-    android:background="@drawable/bg2">
+    android:background="#91C6FF">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -31,7 +31,7 @@
         android:layout_marginEnd="122dp"
         android:text="𝕌𝕊𝔼ℝ ℙℝ𝕆𝔽𝕀𝕃𝔼"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="65px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <LinearLayout
-            android:layout_width="177dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -61,33 +61,31 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="match_parent"
+                android:layout_width="56dp"
                 android:layout_height="50sp"
-                android:text="𝔼𝕞𝕒𝕚𝕝"
-                android:textAlignment="center"
-                android:textSize="40px"
+                android:background="@drawable/emaill"
+                android:gravity="center_vertical"
                 android:textColor="@color/white"
-                android:background="@drawable/bg4"/>
+                android:textSize="40px" />
 
             <TextView
                 android:id="@+id/textView9"
-                android:layout_width="match_parent"
+                android:layout_width="56dp"
                 android:layout_height="50sp"
-                android:text="ℕ𝕒𝕞𝕖"
-                android:textAlignment="center"
-                android:textSize="40px"
+                android:background="@drawable/userr"
+                android:gravity="center_vertical"
                 android:textColor="@color/white"
-                android:background="@drawable/bg4"/>
+                android:textSize="40px" />
+
 
             <TextView
                 android:id="@+id/textView10"
-                android:layout_width="match_parent"
+                android:layout_width="57dp"
                 android:layout_height="50sp"
-                android:text="ℝ𝕖𝕘𝕚𝕤𝕥𝕖𝕣 𝕆𝕟"
-                android:textAlignment="center"
-                android:textSize="40px"
+                android:background="@drawable/registerr"
+                android:gravity="center_vertical"
                 android:textColor="@color/white"
-                android:background="@drawable/bg4"/>
+                android:textSize="40px" />
         </LinearLayout>
 
         <LinearLayout
@@ -98,28 +96,30 @@
 
             <TextView
                 android:id="@+id/proEmail"
-                android:layout_width="match_parent"
+                android:layout_width="254dp"
                 android:layout_height="50sp"
-                android:background="@drawable/bg5"
+
+                android:gravity="center_vertical"
                 android:text="TextView"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/proName"
-                android:layout_width="235dp"
+                android:layout_width="254dp"
                 android:layout_height="50sp"
+
+                android:gravity="center_vertical"
                 android:text="TextView"
-                android:textColor="@color/black"
-                android:background="@drawable/bg5"/>
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/proRegister"
-                android:layout_width="234dp"
+                android:layout_width="255dp"
                 android:layout_height="50sp"
+
+                android:gravity="center_vertical"
                 android:text="TextView"
-                android:textColor="@color/black"
-                android:background="@drawable/bg5"/>
+                android:textColor="@color/black" />
         </LinearLayout>
 
     </LinearLayout>
@@ -144,14 +144,14 @@
             android:layout_height="wrap_content"
             android:text="@string/my_booking"
             android:textAlignment="center"
-            android:backgroundTint="#F44336"/>
+            android:backgroundTint="#3F51B5"/>
 
         <Button
             android:id="@+id/button6"
             android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:text="@string/purchase_his"
-            android:backgroundTint="#F44336"/>
+            android:backgroundTint="#3F51B5"/>
     </LinearLayout>
 
     <ImageView
