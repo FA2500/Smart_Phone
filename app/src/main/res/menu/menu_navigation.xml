@@ -4,20 +4,20 @@
     <item
         android:id="@+id/booking"
         android:title="Booking"
-        android:icon="@drawable/logo"/>
+        android:icon="@drawable/ic_baseline_home_24"/>
     <item
         android:id="@+id/room"
         android:title="Room"
-        android:icon="@drawable/logo"/>
+        android:icon="@drawable/ic_baseline_hotel_24"/>
 
     <item
         android:id="@+id/service"
         android:title="Service"
-        android:icon="@drawable/logo"/>
+        android:icon="@drawable/ic_baseline_room_service_24"/>
 
     <item
         android:id="@+id/profile"
         android:title="Profile"
-        android:icon="@drawable/logo"/>
+        android:icon="@drawable/ic_baseline_person_24"/>
 
 </menu>
