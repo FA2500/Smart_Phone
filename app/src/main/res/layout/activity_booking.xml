@@ -30,7 +30,7 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="2dp"
-        app:itemBackground="@color/teal_700"
+        app:itemBackground="@color/purple_200"
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
