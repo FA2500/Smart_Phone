@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#91C6FF">
 
     <TextView
         android:id="@+id/tv_food_and_drinks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Food and Drinks"
+        android:layout_width="210dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:text="FOOD AND DRINKS"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:padding="10dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        android:textAlignment="center"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="295dp"
+        android:layout_height="73dp"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="96dp">
 
         <CheckBox
             android:id="@+id/cb_breakfast"
@@ -30,23 +44,27 @@
             android:id="@+id/cb_lunch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:text="Lunch"
-            android:textSize="16sp"
-            android:layout_marginLeft="10dp" />
+            android:textSize="16sp" />
 
         <CheckBox
             android:id="@+id/cb_dinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:text="Dinner"
-            android:textSize="16sp"
-            android:layout_marginLeft="10dp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/button7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:layout_width="285dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="364dp"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
