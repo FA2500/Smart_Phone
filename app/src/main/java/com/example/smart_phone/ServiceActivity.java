@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -18,7 +19,13 @@ public class ServiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
 
+
         initializeUI();
+    }
+
+    public void foodOnclick(View view) {
+        Intent intent = new Intent(this, ServiceCleaning.class);
+        startActivity(intent);
     }
 
     private void initializeUI()
