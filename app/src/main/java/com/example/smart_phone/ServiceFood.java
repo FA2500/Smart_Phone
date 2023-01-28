@@ -4,17 +4,13 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ServiceCleaning extends AppCompatActivity {
+public class ServiceFood extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_servicecleaning);
+        setContentView(R.layout.activity_servicefood);
 
-
-        initializeUI();
     }
 
-    private void initializeUI() {
-    }
 }

@@ -24,7 +24,7 @@ public class ServiceActivity extends AppCompatActivity {
     }
 
     public void foodOnclick(View view) {
-        Intent intent = new Intent(this, ServiceCleaning.class);
+        Intent intent = new Intent(this, ServiceFood.class);
         startActivity(intent);
     }
 
