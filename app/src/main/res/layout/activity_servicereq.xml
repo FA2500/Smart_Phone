@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_customer_request"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Customer Request"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:padding="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <CheckBox
+            android:id="@+id/cb_towel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Extra Towels"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_shower_equipment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shower Equipment"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp" />
+
+        <CheckBox
+            android:id="@+id/cb_pillow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Extra Pillows"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp" />
+
+        <CheckBox
+            android:id="@+id/cb_comforter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Extra Comforter"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp" />
+
+        <CheckBox
+            android:id="@+id/cb_others"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Others"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/et_others_request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter other request here"
+            android:visibility="gone"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+
+</LinearLayout>
