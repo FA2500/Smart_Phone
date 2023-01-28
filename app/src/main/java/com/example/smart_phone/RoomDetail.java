@@ -93,9 +93,10 @@ public class RoomDetail extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 Log.d("START DATE","DATE = "+year+"??"+month+"??"+dayOfMonth);
                 Calendar d = Calendar.getInstance();
+
                 Log.d("C", String.valueOf(c.get(Calendar.MONTH)));
                 Log.d("D", String.valueOf(d.get(Calendar.MONTH)));
-                if(d.after(c))
+                /*if(d.after(c))
                 {
                     Toast.makeText(RoomDetail.this, "You can't book before day", Toast.LENGTH_SHORT).show();
                     getStartCal();
@@ -103,7 +104,8 @@ public class RoomDetail extends AppCompatActivity {
                 else
                 {
                     getEndCal(c);
-                }
+                }*/
+                getEndCal(c);
 
             }
         }, sYear,sMonth,sDay);
@@ -144,12 +146,14 @@ public class RoomDetail extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("More Booking")
                 .setMessage("Do you want to book another room?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Book more room", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Intent intent = new Intent(RoomDetail.this, BookingActivity.class);
+                        startActivity(intent);
                     }
                 })
-                .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Check-out", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(RoomDetail.this, BillPlz.class);
                         intent.putExtra("ID",ID);
@@ -158,7 +162,12 @@ public class RoomDetail extends AppCompatActivity {
                         startActivity(intent);
                     }
                 })
-                .setNegativeButton("Cancel Booking", null)
+                .setNeutralButton("Cancel Booking", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish
+                    }
+                })
+
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
