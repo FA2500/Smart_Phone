@@ -196,7 +196,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                         cardID++;
 
                         temp = uri;
-                        Picasso.with(BookingActivity.this)
+                        Picasso.get()
                                 .load(temp)
                                 .resize(350,255)
                                 .into(img);
