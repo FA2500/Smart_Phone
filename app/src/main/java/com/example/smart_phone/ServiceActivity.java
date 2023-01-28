@@ -18,14 +18,8 @@ public class ServiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
-
-
+        
         initializeUI();
-    }
-
-    public void foodOnclick(View view) {
-        Intent intent = new Intent(this, ServiceFood.class);
-        startActivity(intent);
     }
 
     private void initializeUI()
