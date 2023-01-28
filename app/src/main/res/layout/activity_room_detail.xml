@@ -20,11 +20,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+           <!-- <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="match_parent"
                 android:layout_height="139dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars" /> -->
+
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                app:iss_auto_cycle="true"
+                app:iss_period="1000"
+                app:iss_delay="0">
+
+            </com.denzcoskun.imageslider.ImageSlider>
 
             <TextView
                 android:id="@+id/dRoomNameTV"
@@ -42,19 +52,30 @@
                 android:id="@+id/dRoomTypeTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:autoSizeTextType="none"
+                app:fontFamily="@font/aclonica"
+                app:textAllCaps="true" />
 
             <TextView
                 android:id="@+id/dRoomCapTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:gravity="center"
+                app:fontFamily="monospace"
+                app:textAllCaps="true" />
 
             <TextView
                 android:id="@+id/textView18"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_height="323dp"
+                android:gravity="center"
+                android:text="DO CHAT US IF INTERESTED"
+                app:fontFamily="@font/archivo_black"
+                app:textAllCaps="true" />
 
         </LinearLayout>
     </ScrollView>

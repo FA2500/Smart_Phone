@@ -32,7 +32,8 @@
         app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="food/drinks"/>
+        android:text="food/drinks"
+        />
 
     <Button
         android:id="@+id/button9"

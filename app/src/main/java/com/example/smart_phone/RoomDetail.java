@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,10 +25,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.type.DateTime;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import android.widget.TimePicker;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -49,6 +54,17 @@ public class RoomDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_detail);
+
+        ImageSlider imageSlider =findViewById(R.id.slider);
+
+        List<SlideModel> slideModels = new ArrayList<>();
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/smart-hotel-d3cca.appspot.com/o/Room%2FHOTEL1.jpg?alt=media&token=c6f9a9fb-a83c-455d-ac96-f1121b72ffb0",ScaleTypes.FIT));
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/smart-hotel-d3cca.appspot.com/o/Room%2FHOTEL2.jpg?alt=media&token=8aab37fc-91bb-4381-a592-e3d6539f05c5", ScaleTypes.FIT));
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/smart-hotel-d3cca.appspot.com/o/Room%2FHOTEL%203.jpg?alt=media&token=6e6c0d06-c2f0-407e-9191-a329950b4b8a", ScaleTypes.FIT));
+        slideModels.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/smart-hotel-d3cca.appspot.com/o/Room%2FHOTEL%204.jpg?alt=media&token=58e7f394-766b-4759-b1a6-15e9b69246e9", ScaleTypes.FIT));
+        imageSlider.setImageList(slideModels);
+
+
 
         Bundle bundle = getIntent().getExtras();
         ID = bundle.getString("ID");
