@@ -52,13 +52,15 @@ public class BillPlz extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                if(url.contains("true"))
+                if(url.contains("success"))
                 {
+                    Log.d("GOTO","SUCCESS");
                     nav( "True",url);
                 }
-                else if(url.contains("false"))
+                else if(url.contains("failed"))
                 {
-                    nav( "Failed",url);
+                    Log.d("GOTO","FAILED");
+                    nav( "False",url);
                 }
             }
         });
@@ -75,8 +77,12 @@ public class BillPlz extends AppCompatActivity {
         }
         else if(status=="False")
         {
-            Intent intent = new Intent(BillPlz.this, RoomDetail.class);
+            /*Intent intent = new Intent(BillPlz.this, RoomDetail.class);
             intent.putExtra("ID",ID);
+            startActivity(intent);*/
+            Intent intent = new Intent(BillPlz.this, Receipt.class);
+            intent.putExtra("status",status);
+            intent.putExtra("query",query);
             startActivity(intent);
         }
 

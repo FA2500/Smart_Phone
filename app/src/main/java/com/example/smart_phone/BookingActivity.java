@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -207,6 +208,8 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                         LL.setOrientation(LinearLayout.VERTICAL);
 
 
+
+
                         //Room Number
                         TextView NTV = new TextView(BookingActivity.this);
                         NTV.setText(data.get("roomNo").toString());
@@ -236,6 +239,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                         STV.setText(stx);
                         STV.setTextSize(20);
 
+                        STV.setTypeface(Typeface.SERIF, Typeface.BOLD);
 
 
                         newLayout = new LinearLayout(BookingActivity.this);
