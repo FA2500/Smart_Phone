@@ -13,7 +13,7 @@
         android:layout_height="96dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="300dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/hobss_logo1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
