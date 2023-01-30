@@ -413,6 +413,7 @@ public class MainActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            userInfo.setUID(document.getId());
                             userInfo.setEmail(document.get("Email").toString());
                             userInfo.setName(document.get("Name").toString());
                             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);

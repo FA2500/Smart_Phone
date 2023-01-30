@@ -71,6 +71,17 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void goToMyBooking()
+    {
+        Intent intent = new Intent(ProfileActivity.this, Receipt.class);
+        startActivity(intent);
+    }
+
+    private void goToPurchaseHistory()
+    {
+
+    }
+
     private void getData()
     {
         nameTV.setText(userInfo.getName());

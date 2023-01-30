@@ -63,7 +63,6 @@
         android:text="BOOKING"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:fontFamily="@font/dela_gothic_one"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
@@ -75,11 +74,15 @@
         android:id="@+id/filter_btn"
         android:layout_width="55dp"
         android:layout_height="55dp"
+        android:layout_marginBottom="32dp"
         android:clickable="true"
         app:backgroundTint="#FFFFFF"
-        app:srcCompat="@drawable/ic_baseline_filter_alt_24"
-        tools:layout_editor_absoluteX="340dp"
-        tools:layout_editor_absoluteY="80dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName"
+        app:srcCompat="@drawable/ic_baseline_filter_alt_24" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -93,7 +96,9 @@
         android:minHeight="48dp"
         android:paddingLeft="10dp"
         android:text=" Search..."
-        tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="80dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="@+id/filter_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

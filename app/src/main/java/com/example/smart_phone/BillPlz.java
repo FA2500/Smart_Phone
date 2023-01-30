@@ -1,5 +1,6 @@
 package com.example.smart_phone;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -10,12 +11,27 @@ import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BillPlz extends AppCompatActivity {
+
     private String ID;
+    private String roomFBID = "";
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -52,8 +68,14 @@ public class BillPlz extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                if(url.contains("success"))
+                if(url.contains("bills"))
                 {
+                    Log.d("GETBILLID",url.substring(38));
+                    saveTodb();
+                }
+                else if(url.contains("success"))
+                {
+                    updateToDb();
                     Log.d("GOTO","SUCCESS");
                     nav( "True",url);
                 }
@@ -85,6 +107,106 @@ public class BillPlz extends AppCompatActivity {
             intent.putExtra("query",query);
             startActivity(intent);
         }
+    }
+
+    public void updateToDb()
+    {
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("billstatus", true);
+        docData.put("paidOn", FieldValue.serverTimestamp());
+
+        db.collection("rooms/"+ID+"/booking").document(userInfo.getUID())
+                .set(docData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(BillPlz.this, "Something failed, please try again later.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void createToDb()
+    {
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("billstatus", false);
+        db.collection("rooms/"+ID+"/booking").document(userInfo.getUID()).set(docData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        //test
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(BillPlz.this, "Something failed, please try again later.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void saveTodb()
+    {
+        Log.d("TEST ID BUND", ID);
+
+        db.collection("rooms").document(ID)
+                .update("isBooked", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        createToDb();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(BillPlz.this, "Something failed, please try again later.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        /*db.collection("rooms").document(ID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(BillPlz.this, "Something failed, please try again later.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+
+        db.collection("rooms").whereEqualTo("roomNo",ID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful())
+                    {
+                        for (QueryDocumentSnapshot document : task.getResult())
+                        {
+                            roomFBID = document.getId().toString();
+                            Log.d("TEST DB", roomFBID);
+                            break;
+                        }
+                    }
+                }
+
+            })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TEST DB", "FAILED");
+                    }
+                });*/
 
 
     }

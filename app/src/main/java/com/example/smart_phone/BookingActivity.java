@@ -145,6 +145,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
         db.collection("rooms")
+                .whereEqualTo("isBooked",false)
                 .orderBy("roomIndex")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
