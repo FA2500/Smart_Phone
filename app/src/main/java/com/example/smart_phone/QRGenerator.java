@@ -20,6 +20,8 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 
 import org.w3c.dom.Text;
 
+import java.util.Objects;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
@@ -82,7 +84,16 @@ public class QRGenerator extends AppCompatActivity {
         nameTV.setText(name);
 
         //type
-        typeTV.setText(type);
+        if(Objects.equals(type, "GET"))
+        {
+            typeTV.setText("GET ROOM ACCESS");
+        }
+        else if(Objects.equals(type, "POST"))
+        {
+            typeTV.setText("SEND ROOM ACCESS");
+        }
+
+
     }
 
     public void goBack(View v)

@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,6 +93,7 @@ public class BillPlz extends AppCompatActivity {
     {
         if(status=="True")
         {
+            updateToDb();
             Intent intent = new Intent(BillPlz.this, Receipt.class);
             intent.putExtra("status",status);
             intent.putExtra("query",query);
@@ -115,6 +117,12 @@ public class BillPlz extends AppCompatActivity {
         docData.put("billstatus", true);
         docData.put("paidOn", FieldValue.serverTimestamp());
 
+        Map<String, Object> accessData = new HashMap<>();
+        accessData.put("ownerName", userInfo.getName());
+        accessData.put("dependent", Arrays.asList());
+        accessData.put("AddedOn", FieldValue.serverTimestamp());
+
+        //Room Booking History
         db.collection("rooms/"+ID+"/booking").document(userInfo.getUID())
                 .set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -130,6 +138,17 @@ public class BillPlz extends AppCompatActivity {
                     }
                 });
 
+        //Room Booking Access
+        db.collection("rooms/"+ID+"/access").document(userInfo.getUID())
+                        .set(accessData)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+
+                            }
+                        });
+
+        //User Booking History
         db.collection("users/"+ userInfo.getUID()+"/booking").document(ID)
                 .set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
