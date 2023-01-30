@@ -2,8 +2,10 @@ package com.example.smart_phone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 public class Receipt extends AppCompatActivity {
 
@@ -18,5 +20,12 @@ public class Receipt extends AppCompatActivity {
 
         Log.d("STATUS",status);
         Log.d("QUERY",query);
+    }
+
+    public void goToProfile(View v)
+    {
+        Intent intent = new Intent(Receipt.this, ProfileActivity.class);
+        startActivity(intent);
+
     }
 }

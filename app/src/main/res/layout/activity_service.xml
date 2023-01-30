@@ -27,28 +27,15 @@
         android:layout_width="127dp"
         android:layout_height="30dp"
         android:layout_marginTop="236dp"
+        android:text="food and drinks"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.172"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="food and drinks"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textAllCaps="true"
-        android:textAlignment="center"/>
-
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="135dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/fd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView13"
@@ -64,18 +51,6 @@
         app:layout_constraintHorizontal_bias="0.823"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button9"
-        android:layout_width="135dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/clean"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.844"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
 
     <TextView
         android:id="@+id/textView15"
@@ -101,8 +76,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="135dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="296dp"
+        android:background="@drawable/requ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.847"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView16"
@@ -120,16 +105,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/button8"
         android:layout_width="135dp"
         android:layout_height="125dp"
-        android:layout_marginTop="296dp"
-        android:background="@drawable/requ"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/fd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.847"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         />
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="135dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/clean"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.844"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -165,10 +165,20 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <Button
+            android:id="@+id/button12"
+            android:layout_width="206dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#3F51B5"
+            android:onClick="getRoomAccess"
+            android:text="@string/get_room_access"
+            android:textAlignment="center" />
+
+        <Button
             android:id="@+id/button4"
             android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#3F51B5"
+            android:onClick="goToMyBooking"
             android:text="@string/my_booking"
             android:textAlignment="center" />
 
@@ -177,6 +187,7 @@
             android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#3F51B5"
+            android:onClick="goToPurchaseHistory"
             android:text="@string/purchase_his" />
     </LinearLayout>
 

@@ -25,8 +25,14 @@
     <string name="Profile">Profile</string>
 
     <!--Profile-->
-    <string name="my_booking">My Booking</string>
+    <string name="get_room_access">Get Room Access</string>
+    <string name="my_booking">Send Room Access</string>
     <string name="purchase_his">Purchase History</string>
+
+    <!--QR Code-->
+    <string name="qr_code">qr_code</string>
+    <string name="enter_your_info">Enter your info</string>
+    <string name="generate_qr_code">Generate QR Code</string>
 
 
 </resources>

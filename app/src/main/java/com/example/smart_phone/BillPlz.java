@@ -129,6 +129,21 @@ public class BillPlz extends AppCompatActivity {
                         Toast.makeText(BillPlz.this, "Something failed, please try again later.", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        db.collection("users/"+ userInfo.getUID()+"/booking").document(ID)
+                .set(docData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        createToDb();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(BillPlz.this, "Something failed, please try again later.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public void createToDb()
@@ -154,8 +169,30 @@ public class BillPlz extends AppCompatActivity {
     {
         Log.d("TEST ID BUND", ID);
 
+        //Update Room Collection to be booking mode to prevent other guest to book the same room
+
         db.collection("rooms").document(ID)
                 .update("isBooked", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        createToDb();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(BillPlz.this, "Something failed, please try again later.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        //Create a collection on User to add booking on his/her booking list
+
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("billstatus", false);
+
+        db.collection("users/"+ userInfo.getUID()+"/booking").document(ID)
+                .set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
