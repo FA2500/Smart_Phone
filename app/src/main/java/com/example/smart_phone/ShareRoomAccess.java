@@ -123,6 +123,7 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
                                             card.setStrokeWidth(5);
                                             card.setId(cardID);
                                             card.setOnClickListener(ShareRoomAccess.this);
+                                            card.setContentDescription("ID NANTI");
                                             myBookLL.addView(card);
 
                                             cardID++;

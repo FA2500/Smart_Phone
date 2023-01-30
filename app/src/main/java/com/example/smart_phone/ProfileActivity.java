@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.WriterException;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -140,6 +141,9 @@ public class ProfileActivity extends AppCompatActivity {
     private void GETgenerateQR()
     {
         Intent intent = new Intent(ProfileActivity.this, QRGenerator.class);
+        intent.putExtra("UID",userInfo.getUID());
+        intent.putExtra("type","GET");
+        intent.putExtra("name",userInfo.getName());
         startActivity(intent);
     }
 
@@ -157,6 +161,13 @@ public class ProfileActivity extends AppCompatActivity {
         options.setCaptureActivity(CaptureActivity.class);
 
         barLauncher.launch(options);
+    }
+
+    public void Logout(View v)
+    {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(ProfileActivity.this, MainActivity.class );
+        startActivity(intent);
     }
 
 
@@ -179,7 +190,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
             else
             {
-
+                //test
             }
 
 

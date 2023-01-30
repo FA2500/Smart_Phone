@@ -43,10 +43,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="48dp"
         android:layout_marginEnd="1dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,9 +54,9 @@
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="#30ffffff"
             android:gravity="center"
-            android:orientation="vertical"
-            android:background="#30ffffff">
+            android:orientation="vertical">
 
 
             <LinearLayout
@@ -117,8 +115,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="#30ffffff">
+            android:background="#30ffffff"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/proEmail"
@@ -153,20 +151,21 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="416dp"
-        android:layout_height="155dp"
-        android:layout_marginBottom="108dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="24dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <Button
             android:id="@+id/button12"
-            android:layout_width="206dp"
+            android:layout_width="205dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#3F51B5"
             android:onClick="getRoomAccess"
@@ -175,7 +174,7 @@
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="206dp"
+            android:layout_width="205dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#3F51B5"
             android:onClick="goToMyBooking"
@@ -184,11 +183,20 @@
 
         <Button
             android:id="@+id/button6"
-            android:layout_width="206dp"
+            android:layout_width="205dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#3F51B5"
             android:onClick="goToPurchaseHistory"
             android:text="@string/purchase_his" />
+
+        <Button
+            android:id="@+id/button15"
+            android:layout_width="205dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FF0000"
+            android:onClick="Logout"
+            android:text="@string/log_out" />
+
     </LinearLayout>
 
     <ImageView
