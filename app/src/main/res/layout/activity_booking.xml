@@ -63,6 +63,7 @@
         android:text="BOOKING"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:fontFamily="@font/dela_gothic_one"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
@@ -74,20 +75,21 @@
         android:id="@+id/filter_btn"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="32dp"
         android:clickable="true"
         app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName"
+        app:layout_constraintHorizontal_bias="0.619"
+        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.635"
         app:srcCompat="@drawable/ic_baseline_filter_alt_24" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="275dp"
         android:layout_height="57dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/edit_round"
         android:backgroundTint="#FFFFFF"
         android:drawableLeft="@drawable/ic_baseline_search_24"
@@ -97,8 +99,10 @@
         android:paddingLeft="10dp"
         android:text=" Search..."
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="@+id/filter_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.286"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.505" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

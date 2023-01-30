@@ -47,6 +47,7 @@
         app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         />
 
     <TextView
@@ -136,7 +137,7 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
 
-        app:itemBackground="@color/teal_700"
+        app:itemBackground="@color/purple_200"
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -31,8 +31,9 @@ public class Splash_screen extends AppCompatActivity {
         Img = findViewById(R.id.logor);
         Txt = findViewById(R.id.textlogor);
         Animation anime = AnimationUtils.loadAnimation(this,R.anim.side_slide);
+        Animation botanime = AnimationUtils.loadAnimation(this,R.anim.bottom_anim);
         Img.startAnimation(anime);
-        Txt.startAnimation(anime);
+        Txt.startAnimation(botanime);
 
         Intent i = new Intent(this , MainActivity.class);
 
