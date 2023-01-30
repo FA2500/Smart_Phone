@@ -1,28 +1,45 @@
 package com.example.smart_phone;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ShareRoomAccess extends AppCompatActivity implements View.OnClickListener{
 
@@ -34,6 +51,7 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
     private StorageReference storageReference;
 
     private Uri temp;
+    private String publicRoomID;
 
 
 
@@ -53,14 +71,39 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
 
     private void initUI()
     {
-        myBookLL = findViewById(R.id.mybooklist);
+        myBookLL = findViewById(R.id.applianceRoomList);
         newLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
 
     @Override
     public void onClick(View v)
     {
-
+        Log.d("TEST ID", String.valueOf(v.getId()));
+        if(Integer.parseInt(String.valueOf(v.getId())) >= 1000)
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle("Send Room Access")
+                    .setMessage("Select Method to send room Access?")
+                    .setPositiveButton("Show QR Code", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            POSTgenerateQR(v.getContentDescription().toString() , v.getTooltipText().toString());
+                        }
+                    })
+                    .setNegativeButton("Scan QR Code", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            publicRoomID = v.getContentDescription().toString();
+                            POSTscanQR();
+                        }
+                    })
+                    .setNeutralButton("Cancel Action", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //finish
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     private void getData()
@@ -94,7 +137,6 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
 
     private void createButton(QueryDocumentSnapshot doc)
     {
-
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -108,7 +150,7 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful())
                         {
-                            DocumentSnapshot doc =  task.getResult();
+                            DocumentSnapshot docs =  task.getResult();
 
                             //storageReference.child("Merchant/"+name+"/logo")
                             storageReference.child("Room/"+"test"+"/roompic.jfif")
@@ -123,7 +165,8 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
                                             card.setStrokeWidth(5);
                                             card.setId(cardID);
                                             card.setOnClickListener(ShareRoomAccess.this);
-                                            card.setContentDescription("ID NANTI");
+                                            card.setContentDescription(docs.getId());
+                                            card.setTooltipText(docs.get("roomNo").toString());
                                             myBookLL.addView(card);
 
                                             cardID++;
@@ -131,7 +174,7 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
                                             temp = uri;
                                             Picasso.get()
                                                     .load(temp)
-                                                    .resize(350,255)
+                                                    .resize(300,200)
                                                     .into(img);
                                             //img.setOnClickListener(BookingActivity.this);
                                             //img.setId(buttonid);
@@ -142,7 +185,7 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
 
                                             //Room Number
                                             TextView NTV = new TextView(ShareRoomAccess.this);
-                                            NTV.setText(doc.get("roomNo").toString());
+                                            NTV.setText(docs.get("roomNo").toString());
                                             NTV.setTextSize(20);
 
 
@@ -161,9 +204,115 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
 
                     }
                 });
+    }
 
+    private void POSTgenerateQR(String ID, String name)
+    {
+        Intent intent = new Intent(ShareRoomAccess.this, QRGenerator.class);
+        intent.putExtra("UID",ID);
+        intent.putExtra("type","POST");
+        intent.putExtra("name",name);
+        startActivity(intent);
+    }
 
+    private void POSTscanQR()
+    {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 50);
+        }
+        Log.d("CAMERA PERM", String.valueOf(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)));
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Volume up to flash on");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureActivity.class);
+
+        barLauncher.launch(options);
+    }
+
+    ActivityResultLauncher< ScanOptions > barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        if (result.getContents() != null) {
+            if(result.getContents().contains("smarthoteld3cca"))
+            {
+                String GetID = result.getContents().substring(15);
+                //test
+                getDbData(GetID);
+            }
+            else
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ShareRoomAccess.this);
+                builder.setTitle("Invalid QR Code");
+                builder.setMessage("You can only scan HOBBS QR Code");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+            }
+
+        }
+    });
+
+    private void getDbData(String userID)
+    {
+        Log.d("USER ID",userID);
+        Log.d("ROOM ID",publicRoomID);
+       db.collection("rooms/"+publicRoomID+"/access").document(userInfo.getUID())
+               .get()
+               .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                       if(task.isSuccessful())
+                       {
+                           DocumentSnapshot doc = task.getResult();
+                           Log.d("TEST", doc.getData().toString());
+                           ArrayList<String> docData = new ArrayList<>();
+                           docData = (ArrayList<String>) doc.get("dependent");
+                           if(docData==null)
+                           {
+                               writeDbData(userID);
+                               Log.d("TEST","TEST TEST");
+                           }
+                       }
+                   }
+               });
+    }
+
+    private void writeDbData(String userID)
+    {
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("dependant", Arrays.asList(userID));
+
+        Map<String, Object> bookData = new HashMap<>();
+        docData.put("Owner",userInfo.getUID());
+        docData.put("AddedOn", FieldValue.serverTimestamp());
+
+        db.collection("rooms/"+publicRoomID+"/access").document(userInfo.getUID())
+                .set(docData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            db.collection("users/"+userID+"/access").document(publicRoomID)
+                                    .set(bookData)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful())
+                                            {
+                                                Intent intent = new Intent(ShareRoomAccess.this, ProfileActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
 
 
     }
+
 }

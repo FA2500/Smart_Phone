@@ -24,9 +24,12 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.zxing.WriterException;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -52,6 +55,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         initializeUI();
         getData();
+
+        //test
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        Log.d("TOKEN", token);
+                    }
+                });
+        //test
     }
 
     private void initializeUI()
@@ -71,15 +86,17 @@ public class ProfileActivity extends AppCompatActivity {
                     case R.id.booking:
                         startActivity(new Intent(getApplicationContext(),BookingActivity.class));
                         overridePendingTransition(0,0);
-                        Log.d("NAV","BOOKING");
+                        Log.d("NAV","PROFILE");
                         return true;
                     case R.id.room:
-                        startActivity(new Intent(getApplicationContext(),RoomActivity.class));
+                        //startActivity(new Intent(getApplicationContext(),RoomActivity.class));
+                        startActivity(new Intent(getApplicationContext(),ListRoomAppliance.class));
                         overridePendingTransition(0,0);
                         Log.d("NAV","ROOM");
                         return true;
                     case R.id.service:
-                        startActivity(new Intent(getApplicationContext(),ServiceActivity.class));
+                        //startActivity(new Intent(getApplicationContext(),ServiceActivity.class));
+                        startActivity(new Intent(getApplicationContext(),ListRoomServices.class));
                         overridePendingTransition(0,0);
                         Log.d("NAV","SERVICE");
                         return true;

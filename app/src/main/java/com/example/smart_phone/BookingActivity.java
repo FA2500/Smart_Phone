@@ -118,12 +118,14 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                         Log.d("NAV","BOOKING");
                         return true;
                     case R.id.room:
-                        startActivity(new Intent(getApplicationContext(),RoomActivity.class));
+                        //startActivity(new Intent(getApplicationContext(),RoomActivity.class));
+                        startActivity(new Intent(getApplicationContext(),ListRoomAppliance.class));
                         overridePendingTransition(0,0);
                         Log.d("NAV","ROOM");
                         return true;
                     case R.id.service:
-                        startActivity(new Intent(getApplicationContext(),ServiceActivity.class));
+                        //startActivity(new Intent(getApplicationContext(),ServiceActivity.class));
+                        startActivity(new Intent(getApplicationContext(),ListRoomServices.class));
                         overridePendingTransition(0,0);
                         Log.d("NAV","SERVICE");
                         return true;
