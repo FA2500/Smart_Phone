@@ -36,6 +36,8 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.squareup.picasso.Picasso;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,8 +54,6 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
 
     private Uri temp;
     private String publicRoomID;
-
-
 
     private int cardID = 1000;
 
@@ -267,50 +267,86 @@ public class ShareRoomAccess extends AppCompatActivity implements View.OnClickLi
                        if(task.isSuccessful())
                        {
                            DocumentSnapshot doc = task.getResult();
-                           Log.d("TEST", doc.getData().toString());
-                           ArrayList<String> docData = new ArrayList<>();
-                           docData = (ArrayList<String>) doc.get("dependent");
-                           if(docData==null)
+                           ArrayList<String> dependantList = new ArrayList<String>();
+                           if(doc.exists())
                            {
-                               writeDbData(userID);
-                               Log.d("TEST","TEST TEST");
+                               dependantList = (ArrayList<String>) doc.get("dependant");
+                               //read first, then update
+                               writeDbData(userID,dependantList);
+                           }
+                           else
+                           {
+                               writeDbData(userID,dependantList);
                            }
                        }
                    }
                });
     }
 
-    private void writeDbData(String userID)
+    private void writeDbData(String userID, ArrayList<String> dependantList)
     {
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("dependant", Arrays.asList(userID));
 
-        Map<String, Object> bookData = new HashMap<>();
-        docData.put("Owner",userInfo.getUID());
-        docData.put("AddedOn", FieldValue.serverTimestamp());
+        if(dependantList.isEmpty())
+        {
+            Map<String, Object> docData = new HashMap<>();
+            docData.put("dependant", Arrays.asList(userID));
 
-        db.collection("rooms/"+publicRoomID+"/access").document(userInfo.getUID())
-                .set(docData)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                        {
-                            db.collection("users/"+userID+"/access").document(publicRoomID)
-                                    .set(bookData)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful())
-                                            {
-                                                Intent intent = new Intent(ShareRoomAccess.this, ProfileActivity.class);
-                                                startActivity(intent);
+            Map<String, Object> bookData = new HashMap<>();
+            docData.put("Owner",userInfo.getUID());
+            docData.put("AddedOn", FieldValue.serverTimestamp());
+
+            db.collection("rooms/"+publicRoomID+"/access").document(userInfo.getUID())
+                    .set(docData)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                            {
+                                db.collection("users/"+userID+"/access").document(publicRoomID)
+                                        .set(bookData)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful())
+                                                {
+                                                    Intent intent = new Intent(ShareRoomAccess.this, ProfileActivity.class);
+                                                    startActivity(intent);
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                            }
                         }
-                    }
-                });
+                    });
+        }
+        else
+        {
+            Map<String, Object> bookData = new HashMap<>();
+
+            db.collection("rooms/"+publicRoomID+"/access").document(userInfo.getUID())
+                    .update("dependant", FieldValue.arrayUnion(userID))
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                            {
+                                db.collection("users/"+userID+"/access").document(publicRoomID)
+                                        .set(bookData)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful())
+                                                {
+                                                    Intent intent = new Intent(ShareRoomAccess.this, ProfileActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        }
+
+
 
 
     }

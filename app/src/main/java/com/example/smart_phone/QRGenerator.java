@@ -96,6 +96,8 @@ public class QRGenerator extends AppCompatActivity {
 
     }
 
+
+
     public void goBack(View v)
     {
         Intent intent = new Intent(QRGenerator.this, ProfileActivity.class);

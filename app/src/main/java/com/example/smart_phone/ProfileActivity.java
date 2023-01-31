@@ -29,12 +29,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.zxing.WriterException;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -44,9 +52,11 @@ public class ProfileActivity extends AppCompatActivity {
     //TextView
     private TextView nameTV;
     private TextView emailTV;
-    private TextView registerTV;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    //Room List
+    private ArrayList<String> roomList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +83,6 @@ public class ProfileActivity extends AppCompatActivity {
     {
         nameTV = findViewById(R.id.proName);
         emailTV = findViewById(R.id.proEmail);
-        registerTV = findViewById(R.id.proRegister);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.profile);
@@ -109,6 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    //GET ROOM ACCESS
     public void getRoomAccess(View v)
     {
         new AlertDialog.Builder(this)
@@ -135,12 +145,14 @@ public class ProfileActivity extends AppCompatActivity {
                 .show();
     }
 
+    //SEND ROOM ACCESS
     public void goToMyBooking(View v)
     {
         Intent intent = new Intent(ProfileActivity.this, ShareRoomAccess.class);
         startActivity(intent);
     }
 
+    //PURCHASE HISTORY
     public void goToPurchaseHistory(View v)
     {
         Intent intent = new Intent(ProfileActivity.this, PurchaseHistory.class);
@@ -187,30 +199,70 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     ActivityResultLauncher< ScanOptions > barLauncher = registerForActivityResult(new ScanContract(), result -> {
     if (result.getContents() != null) {
         if(result.getContents().contains("smarthoteld3cca"))
         {
             String GetID = result.getContents().substring(15);
-            if(GetID.equals(userInfo.getUID()))
-            {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-                builder.setTitle("Error");
-                builder.setMessage("You already have access to this room");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).show();
-            }
-            else
-            {
-                //test
-            }
 
+            //get Data
+            db.collection("users/"+userInfo.getUID()+"/booking")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                for(DocumentSnapshot docs : task.getResult())
+                                {
+                                    roomList.add(docs.getId());
+                                }
+                            }
+                            db.collection("users/"+userInfo.getUID()+"/access")
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if(task.isSuccessful())
+                                            {
+                                                boolean check = true;
+                                                for(DocumentSnapshot docs : task.getResult())
+                                                {
+                                                    roomList.add(docs.getId());
+                                                }
+                                                for(int i = 0 ; i < roomList.size() ; i++)
+                                                {
+                                                    if(GetID.equals(roomList.get(i)))
+                                                    {
+                                                        check = false;
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                                                        builder.setTitle("Error");
+                                                        builder.setMessage("You already have access to this room");
+                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                dialogInterface.dismiss();
+                                                            }
+                                                        }).show();
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        //test
 
+                                                    }
+                                                }
+                                                if(check)
+                                                {
+                                                    writeDbData(GetID);
+                                                }
+                                            }
+
+                                        }
+                                    });
+                        }
+                    });
+            //get Data
         }
         else
         {
@@ -227,4 +279,96 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 });
+
+    private void writeDbData(String GetID)
+    {
+
+        db.collection("rooms/"+GetID+"/access").document(userInfo.getUID())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            DocumentSnapshot doc = task.getResult();
+                            ArrayList<String> dependantList = new ArrayList<String>();
+                            if(doc.exists())
+                            {
+                                dependantList = (ArrayList<String>) doc.get("dependant");
+                                //read first, then update
+
+                            }
+                            else
+                            {
+
+                            }
+                            if(dependantList.isEmpty())
+                            {
+                                Map<String, Object> docData = new HashMap<>();
+                                docData.put("dependant", Arrays.asList(userInfo.getUID()));
+
+                                Map<String, Object> bookData = new HashMap<>();
+                                docData.put("Owner",userInfo.getUID());
+                                docData.put("AddedOn", FieldValue.serverTimestamp());
+
+                                db.collection("rooms/"+GetID+"/access").document(userInfo.getUID())
+                                        .set(docData)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful())
+                                                {
+                                                    db.collection("users/"+userInfo.getUID()+"/access").document(GetID)
+                                                            .set(bookData)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if(task.isSuccessful())
+                                                                    {
+                                                                        Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        });
+                            }
+                            else
+                            {
+                                Map<String, Object> bookData = new HashMap<>();
+
+                                db.collection("rooms/"+GetID+"/access").document(userInfo.getUID())
+                                        .update("dependant", FieldValue.arrayUnion(userInfo.getUID()))
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful())
+                                                {
+                                                    db.collection("users/"+userInfo.getUID()+"/access").document(GetID)
+                                                            .set(bookData)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if(task.isSuccessful())
+                                                                    {
+                                                                        Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+
+
+
+
+
+
+    }
 }
