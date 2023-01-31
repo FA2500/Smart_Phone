@@ -154,11 +154,6 @@ public class ServiceClean extends AppCompatActivity {
 
     public void submitClean(View v)
     {
-        if(!(dailyCB.isChecked() && extraCB.isChecked()))
-        {
-            Toast.makeText(this, "Select any cleaning service to continue", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if(dailyCB.isChecked())
         {

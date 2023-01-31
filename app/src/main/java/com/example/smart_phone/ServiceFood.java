@@ -212,11 +212,6 @@ public class ServiceFood extends AppCompatActivity {
 
     public void submitFood(View v)
     {
-        if(!(breakfast.isChecked() && lunch.isChecked() && Dinner.isChecked()))
-        {
-            Toast.makeText(this, "Select any food to continue", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if(breakfast.isChecked())
         {

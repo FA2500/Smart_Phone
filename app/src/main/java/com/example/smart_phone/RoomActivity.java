@@ -55,7 +55,7 @@ public class RoomActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked)
                 {
-                    post("http://192.168.252.56/?led_on", new Callback() {
+                    post("http://192.168.227.56/?led_on", new Callback() {
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
                         @Override
@@ -64,7 +64,7 @@ public class RoomActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    post("http://192.168.252.56/?led_off", new Callback() {
+                    post("http://192.168.227.56/?led_off", new Callback() {
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
                         @Override
@@ -78,7 +78,7 @@ public class RoomActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked)
                 {
-                    post("http://192.168.252.56/?led2_on", new Callback() {
+                    post("http://192.168.227.56/?led2_on", new Callback() {
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
                         @Override
@@ -87,7 +87,7 @@ public class RoomActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    post("http://192.168.252.56/?led2_off", new Callback() {
+                    post("http://192.168.227.56/?led2_off", new Callback() {
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
                         @Override
@@ -101,7 +101,7 @@ public class RoomActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked)
                 {
-                    post("http://192.168.252.56/?fan_on", new Callback() {
+                    post("http://192.168.227.56/?fan_on", new Callback() {
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
                         @Override
@@ -110,7 +110,7 @@ public class RoomActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    post("http://192.168.252.56/?fan_off", new Callback() {
+                    post("http://192.168.227.56/?fan_off", new Callback() {
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
                         @Override
@@ -124,7 +124,7 @@ public class RoomActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked)
                 {
-                    post("http://192.168.252.56/?door_lock", new Callback() {
+                    post("http://192.168.227.56/?door_lock", new Callback() {
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
                         @Override
@@ -133,7 +133,7 @@ public class RoomActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    post("http://192.168.252.56/?door_unlock", new Callback() {
+                    post("http://192.168.227.56/?door_unlock", new Callback() {
                         @Override
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
                         @Override

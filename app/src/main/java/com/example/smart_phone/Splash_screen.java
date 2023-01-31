@@ -57,8 +57,6 @@ public class Splash_screen extends AppCompatActivity {
                 finish();
             }
         }, 3000);
-
-
     }
 
     private void createNotificationChannel() {
@@ -78,8 +76,6 @@ public class Splash_screen extends AppCompatActivity {
     }
 
     public void showNotification(Context context, String title, String message, Intent intent, int reqCode) {
-
-
         PendingIntent pendingIntent = PendingIntent.getActivity(context, reqCode, intent, PendingIntent.FLAG_MUTABLE);
         String CHANNEL_ID = "channel_name";// The id of the channel.
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
