@@ -48,7 +48,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayout.LayoutParams newLayoutParams;
 
     private EditText searchET;
-    private String searchTypeSet;
+    private String searchTypeSet = "roomNo";
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -130,7 +130,7 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(searchET.getText().length() == 0)
+                if(searchET.getText().length() == 0 || searchET.getText() == null)
                 {
                     cardID = 1000;
                     layout.removeAllViews();
