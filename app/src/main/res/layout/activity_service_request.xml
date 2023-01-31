@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#91C6FF">
+    android:background="#91C6FF"
+    tools:context=".ServiceRequest">
 
     <TextView
         android:id="@+id/tv_customer_request"

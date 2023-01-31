@@ -1,17 +1,23 @@
 package com.example.smart_phone;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,6 +46,9 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
 
     private LinearLayout newLayout;
     private LinearLayout.LayoutParams newLayoutParams;
+
+    private EditText searchET;
+    private String searchTypeSet;
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -98,13 +107,43 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
                 //createDistrictButton(StateM[i]);
             }
         }*/
-
     }
 
     private void initializeUI()
     {
+
+
         layout = findViewById(R.id.BLL01);
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+        searchET = findViewById(R.id.searchET);
+        searchET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(searchET.getText().length() == 0)
+                {
+                    cardID = 1000;
+                    layout.removeAllViews();
+                    getData();
+                }
+                else
+                {
+                    cardID = 1000;
+                    layout.removeAllViews();
+                    getDataWithSearch(searchET.getText().toString());
+                }
+            }
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.booking);
@@ -148,7 +187,38 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
 
         db.collection("rooms")
                 .whereEqualTo("isBooked",false)
-                .orderBy("roomIndex")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+                                try {
+                                    NoRoom++;
+                                    createButton(document.getData(), document.getId());
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.d("TEsT",document.getData().toString());
+
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void getDataWithSearch(String searchValue)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        db.collection("rooms")
+                .whereEqualTo("isBooked",false)
+                .whereEqualTo(searchTypeSet, searchValue)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -180,88 +250,200 @@ public class BookingActivity extends AppCompatActivity implements View.OnClickLi
         //Get Image First
         ImageButton img = new ImageButton(this);
 
-        //storageReference.child("Merchant/"+name+"/logo")
-        storageReference.child("Room/"+"test"+"/roompic.jfif")
-                .getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
+        if(data.get("roomType").toString().equals("Deluxe"))
+        {
+            //storageReference.child("Merchant/"+name+"/logo")
+            storageReference.child("Room/"+"test"+"/roompic.jfif")
+                    .getDownloadUrl()
+                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
 
-                        MaterialCardView card = new MaterialCardView(BookingActivity.this);
-                        card.setBackgroundColor(Color.CYAN);
-                        card.setStrokeColor(Color.BLACK);
-                        card.setStrokeWidth(5);
-                        card.setId(cardID);
-                        card.setOnClickListener(BookingActivity.this);
-                        card.setContentDescription(ID);
-                        layout.addView(card);
+                            MaterialCardView card = new MaterialCardView(BookingActivity.this);
+                            card.setBackgroundColor(Color.CYAN);
+                            card.setStrokeColor(Color.BLACK);
+                            card.setStrokeWidth(5);
+                            card.setId(cardID);
+                            card.setOnClickListener(BookingActivity.this);
+                            card.setContentDescription(ID);
+                            layout.addView(card);
 
-                        cardID++;
+                            cardID++;
 
-                        temp = uri;
-                        Picasso.get()
-                                .load(temp)
-                                .resize(350,255)
-                                .into(img);
-                        //img.setOnClickListener(BookingActivity.this);
-                        //img.setId(buttonid);
-                        img.setContentDescription("TEST");
+                            temp = uri;
+                            Picasso.get()
+                                    .load(temp)
+                                    .resize(350,255)
+                                    .into(img);
+                            //img.setOnClickListener(BookingActivity.this);
+                            //img.setId(buttonid);
+                            img.setContentDescription("TEST");
 
-                        LinearLayout LL = new LinearLayout(BookingActivity.this);
-                        LL.setOrientation(LinearLayout.VERTICAL);
-
-
+                            LinearLayout LL = new LinearLayout(BookingActivity.this);
+                            LL.setOrientation(LinearLayout.VERTICAL);
 
 
-                        //Room Number
-                        TextView NTV = new TextView(BookingActivity.this);
-                        NTV.setText(data.get("roomNo").toString());
-                        NTV.setTextSize(20);
 
-                        //Room Type
-                        TextView TTV = new TextView(BookingActivity.this);
-                        TTV.setText(data.get("roomType").toString());
-                        TTV.setTextSize(20);
 
-                        //Room Size
-                        int adult = Integer.parseInt(data.get("roomCapA").toString()) ;
-                        int child = Integer.parseInt(data.get("roomCapC").toString()) ;
-                        String stx = "";
+                            //Room Number
+                            TextView NTV = new TextView(BookingActivity.this);
+                            NTV.setText(data.get("roomNo").toString());
+                            NTV.setTextSize(20);
 
-                        if(adult > 0)
-                        {
-                            stx = adult + " Adults";
+                            //Room Type
+                            TextView TTV = new TextView(BookingActivity.this);
+                            TTV.setText(data.get("roomType").toString());
+                            TTV.setTextSize(20);
+
+                            //Room Size
+                            int adult = Integer.parseInt(data.get("roomCapA").toString()) ;
+                            int child = Integer.parseInt(data.get("roomCapC").toString()) ;
+                            String stx = "";
+
+                            if(adult > 0)
+                            {
+                                stx = adult + " Adults";
+                            }
+                            if(child > 0)
+                            {
+                                stx = stx + " " + child + " Child";
+                            }
+
+                            TextView STV = new TextView(BookingActivity.this);
+                            STV.setText(stx);
+                            STV.setTextSize(20);
+
+                            STV.setTypeface(Typeface.SERIF, Typeface.BOLD);
+
+
+                            newLayout = new LinearLayout(BookingActivity.this);
+                            //newLayout.setId((layoutid));
+                            newLayout.setOrientation(LinearLayout.HORIZONTAL);
+                            card.addView(newLayout , layoutParams);
+
+                            newLayout.addView(img,0);
+                            newLayout.addView(LL,1);
+                            LL.addView(NTV,0 );
+                            LL.addView(TTV,1);
+                            LL.addView(STV,2);
+
+                            NoChild++;
+                            Log.d("ADDED","CHILD");
+
                         }
-                        if(child > 0)
-                        {
-                            stx = stx + " " + child + " Child";
+                    });
+        }
+        else if(data.get("roomType").toString().equals("Superior"))
+        {
+            //storageReference.child("Merchant/"+name+"/logo")
+            storageReference.child("Room/"+"test"+"/roompic2.jpeg")
+                    .getDownloadUrl()
+                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            MaterialCardView card = new MaterialCardView(BookingActivity.this);
+                            card.setBackgroundColor(Color.CYAN);
+                            card.setStrokeColor(Color.BLACK);
+                            card.setStrokeWidth(5);
+                            card.setId(cardID);
+                            card.setOnClickListener(BookingActivity.this);
+                            card.setContentDescription(ID);
+                            layout.addView(card);
+
+                            cardID++;
+
+                            temp = uri;
+                            Picasso.get()
+                                    .load(temp)
+                                    .resize(350,255)
+                                    .into(img);
+                            //img.setOnClickListener(BookingActivity.this);
+                            //img.setId(buttonid);
+                            img.setContentDescription("TEST");
+
+                            LinearLayout LL = new LinearLayout(BookingActivity.this);
+                            LL.setOrientation(LinearLayout.VERTICAL);
+
+
+
+
+                            //Room Number
+                            TextView NTV = new TextView(BookingActivity.this);
+                            NTV.setText(data.get("roomNo").toString());
+                            NTV.setTextSize(20);
+
+                            //Room Type
+                            TextView TTV = new TextView(BookingActivity.this);
+                            TTV.setText(data.get("roomType").toString());
+                            TTV.setTextSize(20);
+
+                            //Room Size
+                            int adult = Integer.parseInt(data.get("roomCapA").toString()) ;
+                            int child = Integer.parseInt(data.get("roomCapC").toString()) ;
+                            String stx = "";
+
+                            if(adult > 0)
+                            {
+                                stx = adult + " Adults";
+                            }
+                            if(child > 0)
+                            {
+                                stx = stx + " " + child + " Child";
+                            }
+
+                            TextView STV = new TextView(BookingActivity.this);
+                            STV.setText(stx);
+                            STV.setTextSize(20);
+
+                            STV.setTypeface(Typeface.SERIF, Typeface.BOLD);
+
+
+                            newLayout = new LinearLayout(BookingActivity.this);
+                            //newLayout.setId((layoutid));
+                            newLayout.setOrientation(LinearLayout.HORIZONTAL);
+                            card.addView(newLayout , layoutParams);
+
+                            newLayout.addView(img,0);
+                            newLayout.addView(LL,1);
+                            LL.addView(NTV,0 );
+                            LL.addView(TTV,1);
+                            LL.addView(STV,2);
+
+                            NoChild++;
+                            Log.d("ADDED","CHILD");
+
                         }
+                    });
+        }
 
 
-                        TextView STV = new TextView(BookingActivity.this);
-                        STV.setText(stx);
-                        STV.setTextSize(20);
-
-                        STV.setTypeface(Typeface.SERIF, Typeface.BOLD);
-
-
-                        newLayout = new LinearLayout(BookingActivity.this);
-                        //newLayout.setId((layoutid));
-                        newLayout.setOrientation(LinearLayout.HORIZONTAL);
-                        card.addView(newLayout , layoutParams);
-
-                        newLayout.addView(img,0);
-                        newLayout.addView(LL,1);
-                        LL.addView(NTV,0 );
-                        LL.addView(TTV,1);
-                        LL.addView(STV,2);
-
-                        NoChild++;
-                        Log.d("ADDED","CHILD");
-
-                    }
-                });
     }
 
+    public void setFacetFilter(View v)
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Filtering Option")
+                .setMessage("Choose Filtering Options that you want to filter")
+                .setPositiveButton("Room Name", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        searchTypeSet = "roomNo";
+                    }
+                })
+                .setNegativeButton("Room Type", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        searchTypeSet = "roomType";
+                    }
+                })
+                .setNeutralButton("Remove Filter", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        searchTypeSet = "";
+                    }
+                })
+
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
 }

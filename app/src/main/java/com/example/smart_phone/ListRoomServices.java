@@ -99,6 +99,7 @@ public class ListRoomServices extends AppCompatActivity implements View.OnClickL
         if(Integer.parseInt(String.valueOf(v.getId())) >= 1000)
         {
             Intent intent = new Intent(ListRoomServices.this,ServiceActivity.class );
+            intent.putExtra("roomID",v.getContentDescription().toString());
             startActivity(intent);
         }
     }

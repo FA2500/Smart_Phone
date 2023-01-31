@@ -8,16 +8,14 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="418dp"
-        android:layout_height="578dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:clipToPadding="true"
         android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="@+id/bottom_navigation"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.752"
-        tools:visibility="gone">
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
         <LinearLayout
             android:id="@+id/BLL01"
@@ -75,17 +73,18 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:clickable="true"
+        android:onClick="setFacetFilter"
         app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.619"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
+        app:layout_constraintStart_toEndOf="@+id/searchET"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.635"
         app:srcCompat="@drawable/ic_baseline_filter_alt_24" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/searchET"
         android:layout_width="275dp"
         android:layout_height="57dp"
         android:layout_marginTop="32dp"
@@ -93,7 +92,7 @@
         android:backgroundTint="#FFFFFF"
         android:drawableLeft="@drawable/ic_baseline_search_24"
         android:ems="10"
-        android:hint=" Search..."
+        android:hint=" Search Room No"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingLeft="10dp"

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#91C6FF">
+    android:background="#91C6FF"
+    tools:context=".ServiceReport">
 
     <TextView
         android:layout_width="298dp"

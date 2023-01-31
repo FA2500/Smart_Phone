@@ -13,7 +13,7 @@ public class Push_Noti_runapp {
 
 
 
-    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Push_Noti_runapp)
+    /*NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Push_Noti_runapp)
             .setSmallIcon(R.drawable.ic_baseline_notifications_24)
             .setContentTitle("My notification")
             .setContentText("Much longer text that cannot fit one line...")
@@ -60,5 +60,5 @@ public class Push_Noti_runapp {
             // notificationId is a unique int for each notification that you must define
             notificationManager.notify(notificationId, builder.build());
         }
-    }
+    }*/
 }

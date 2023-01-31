@@ -7,111 +7,64 @@
     android:background="#91C6FF">
 
 
+    <Button
+        android:id="@+id/button25"
+        android:layout_width="135dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="20dp"
+
+        android:layout_marginEnd="137dp"
+        android:background="@drawable/fd"
+        android:onClick="goToFood"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_select_service" />
+
     <TextView
         android:id="@+id/textView7"
         android:layout_width="127dp"
         android:layout_height="30dp"
-        android:layout_marginTop="236dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="140dp"
         android:text="food and drinks"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.172"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button25" />
+
+    <Button
+        android:id="@+id/button26"
+        android:layout_width="135dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="138dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="138dp"
+        android:background="@drawable/clean"
+        android:onClick="goToClean"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="127dp"
         android:layout_height="30dp"
-        android:layout_marginTop="236dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="142dp"
         android:text="room cleaning"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.823"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="130dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="432dp"
-        android:text="customer report"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.172"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button23"
-        android:layout_width="135dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="296dp"
-        android:background="@drawable/rep"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button24"
-        android:layout_width="135dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="296dp"
-        android:background="@drawable/requ"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.847"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="130dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="432dp"
-        android:text="customer request"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.832"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button25"
-        android:layout_width="135dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/fd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        />
-
-    <Button
-        android:id="@+id/button26"
-        android:layout_width="135dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/clean"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.844"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button26" />
 
     <TextView
         android:id="@+id/tv_select_service"

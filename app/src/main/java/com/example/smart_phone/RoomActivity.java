@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -27,6 +29,10 @@ import okhttp3.Response;
 public class RoomActivity extends AppCompatActivity {
 
     OkHttpClient client = new OkHttpClient();
+    private Switch LED1;
+    private Switch LED2;
+    private Switch FAN;
+    private Switch DOOR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,109 +45,103 @@ public class RoomActivity extends AppCompatActivity {
 
     private void initializeUI()
     {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.room);
+        LED1 = findViewById(R.id.switch1);
+        LED2 = findViewById(R.id.switch2);
+        FAN = findViewById(R.id.switch3);
+        DOOR = findViewById(R.id.switch4);
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        LED1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId())
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
                 {
-                    case R.id.booking:
-                        startActivity(new Intent(getApplicationContext(),BookingActivity.class));
-                        overridePendingTransition(0,0);
-                        Log.d("NAV","BOOKING");
-                        return true;
-                    case R.id.room:
-                        Log.d("NAV","ROOM");
-                        return true;
-                    case R.id.service:
-                        startActivity(new Intent(getApplicationContext(),ServiceActivity.class));
-                        overridePendingTransition(0,0);
-                        Log.d("NAV","SERVICE");
-                        return true;
-                    case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                        overridePendingTransition(0,0);
-                        Log.d("NAV","PROFILE");
-                        return true;
+                    post("http://192.168.252.56/?led_on", new Callback() {
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
+                    });
                 }
-                return false;
+                else
+                {
+                    post("http://192.168.252.56/?led_off", new Callback() {
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
+                    });
+                }
             }
         });
-
-        /*Button btnOnLed1 = findViewById(R.id.button4LED1);
-        btnOnLed1.setOnClickListener(view -> {
-            post("http://192.168.252.56/?led_on", new Callback() {
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-            });
+        LED2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    post("http://192.168.252.56/?led2_on", new Callback() {
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
+                    });
+                }
+                else
+                {
+                    post("http://192.168.252.56/?led2_off", new Callback() {
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
+                    });
+                }
+            }
         });
-        Button btnOffLed1 = findViewById(R.id.button5LED1);
-        btnOffLed1.setOnClickListener(view -> {
-            post("http://192.168.252.56/?led_off", new Callback() {
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-            });
+        FAN.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    post("http://192.168.252.56/?fan_on", new Callback() {
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
+                    });
+                }
+                else
+                {
+                    post("http://192.168.252.56/?fan_off", new Callback() {
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
+                    });
+                }
+            }
         });
-        Button btnOnLed2 = findViewById(R.id.button6LED2);
-        btnOnLed2.setOnClickListener(view -> {
-            post("http://192.168.252.56/?led2_on", new Callback() {
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-            });
+        DOOR.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    post("http://192.168.252.56/?door_lock", new Callback() {
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
+                    });
+                }
+                else
+                {
+                    post("http://192.168.252.56/?door_unlock", new Callback() {
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
+                    });
+                }
+            }
         });
-        Button btnOffLed2 = findViewById(R.id.button7LED2);
-        btnOffLed2.setOnClickListener(view -> {
-            post("http://192.168.252.56/?led2_off", new Callback() {
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-            });
-        });
-        Button btnOnFan = findViewById(R.id.buttonFanOn);
-        btnOnFan.setOnClickListener(view -> {
-            post("http://192.168.252.56/?fan_on", new Callback() {
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-            });
-        });
-        Button btnOffFan = findViewById(R.id.buttonFanOff);
-        btnOffFan.setOnClickListener(view -> {
-            post("http://192.168.252.56/?fan_off", new Callback() {
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-            });
-        });
-        Button btnLockDoor = findViewById(R.id.buttonLock);
-        btnLockDoor.setOnClickListener(view -> {
-            post("http://192.168.252.56/?door_lock", new Callback() {
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-            });
-        });
-        Button btnUnlockDoor = findViewById(R.id.buttonUnlock);
-        btnUnlockDoor.setOnClickListener(view -> {
-            post("http://192.168.252.56/?door_unlock", new Callback() {
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-            });
-        });*/
     }
 
     Call post(String url, Callback callback) {

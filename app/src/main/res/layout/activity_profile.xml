@@ -141,7 +141,7 @@
                 android:layout_height="50sp"
 
                 android:gravity="center_vertical"
-                android:text="TextView"
+                android:text="User"
                 android:textColor="@color/black" />
         </LinearLayout>
 
