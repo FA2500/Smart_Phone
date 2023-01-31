@@ -2,6 +2,7 @@ package com.example.smart_phone;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -98,6 +99,9 @@ public class BillPlz extends AppCompatActivity {
             intent.putExtra("status",status);
             intent.putExtra("query",query);
             startActivity(intent);
+
+
+
         }
         else if(status=="False")
         {

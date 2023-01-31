@@ -35,5 +35,10 @@
     <string name="enter_your_info">Enter your info</string>
     <string name="generate_qr_code">Generate QR Code</string>
 
+    <!--Push Notification-->
+    <string name="channel_name">push</string>
+    <string name="channel_description">Push</string>
+    <string name="channel_id">999</string>
+
 
 </resources>

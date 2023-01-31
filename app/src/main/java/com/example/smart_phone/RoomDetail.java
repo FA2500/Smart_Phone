@@ -3,6 +3,8 @@ package com.example.smart_phone;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +33,7 @@ import android.widget.TimePicker;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -50,10 +53,57 @@ public class RoomDetail extends AppCompatActivity {
     private int sYear, sMonth, sDay;
     private int eYear, eMonth, eDay;
 
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+
+    private Calendar ss;
+    private Calendar cc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_detail);
+
+        executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(RoomDetail.this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(),
+                                errorCode + " Authentication error: " + errString, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(
+                    @NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(),
+                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(RoomDetail.this, BillPlz.class);
+                intent.putExtra("ID",ID);
+                intent.putExtra("start",ss);
+                intent.putExtra("end",cc);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Authentication failed",
+                                Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Biometric login for payment")
+                .setSubtitle("Use biometric credential to confirm your booking")
+                .setNegativeButtonText("Cancel Action")
+                .build();
 
         ImageSlider imageSlider =findViewById(R.id.slider);
 
@@ -160,22 +210,14 @@ public class RoomDetail extends AppCompatActivity {
     void getConfirm(Calendar s, Calendar e)
     {
         new AlertDialog.Builder(this)
-                .setTitle("More Booking")
-                .setMessage("Do you want to book another room?")
-                .setPositiveButton("Book more room", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(RoomDetail.this, BookingActivity.class);
-                        startActivity(intent);
-                    }
-                })
+                .setTitle("Checkout")
+                .setMessage("Confirm Checkout?")
                 .setNegativeButton("Check-out", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(RoomDetail.this, BillPlz.class);
-                        intent.putExtra("ID",ID);
-                        intent.putExtra("start",s);
-                        intent.putExtra("end",e);
-                        startActivity(intent);
+                        ss = s;
+                        cc = e;
+                        biometricPrompt.authenticate(promptInfo);
                     }
                 })
                 .setNeutralButton("Cancel Booking", new DialogInterface.OnClickListener() {
