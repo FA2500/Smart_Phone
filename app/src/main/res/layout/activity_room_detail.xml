@@ -60,7 +60,9 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textAlignment="center"
-                android:textSize="24sp" />
+                android:textSize="40sp"
+                app:drawableTint="#000000"
+                app:fontFamily="@font/gravitas_one" />
 
             <View
                 android:id="@+id/view"
@@ -73,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="TextView"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 app:fontFamily="monospace"
                 app:textAllCaps="true" />
 

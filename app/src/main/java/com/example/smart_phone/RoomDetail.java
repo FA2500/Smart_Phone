@@ -1,11 +1,6 @@
 package com.example.smart_phone;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
-
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
@@ -22,22 +24,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.type.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import android.widget.TimePicker;
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
-
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.widget.Toast;
 
 public class RoomDetail extends AppCompatActivity {
 
@@ -83,7 +75,8 @@ public class RoomDetail extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(getApplicationContext(),
                         "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RoomDetail.this, BillPlz.class);
+                Intent intent = new Intent(RoomDetail.this, Billplz.class);
+                intent.putExtra("total",100.00);
                 intent.putExtra("ID",ID);
                 intent.putExtra("start",ss);
                 intent.putExtra("end",cc);
