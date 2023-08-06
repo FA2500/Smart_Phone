@@ -1,27 +1,20 @@
 package com.example.smart_phone;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import okhttp3.Call;
-import okhttp3.Callback;
+import java.util.HashMap;
+import java.util.Map;
+
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 
 
@@ -33,6 +26,9 @@ public class RoomActivity extends AppCompatActivity {
     private Switch LED2;
     private Switch FAN;
     private Switch DOOR;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance("https://smart-hotel-d3cca-default-rtdb.asia-southeast1.firebasedatabase.app");
+    DatabaseReference myRef = database.getReference("sensor");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,106 +49,35 @@ public class RoomActivity extends AppCompatActivity {
         LED1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    post("http://192.168.227.56/?led_on", new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-                    });
-                }
-                else
-                {
-                    post("http://192.168.227.56/?led_off", new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-                    });
-                }
+                Map a = new HashMap();
+                a.put("LED1", isChecked);
+                myRef.updateChildren(a);
             }
         });
         LED2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    post("http://192.168.227.56/?led2_on", new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-                    });
-                }
-                else
-                {
-                    post("http://192.168.227.56/?led2_off", new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-                    });
-                }
+                Map a = new HashMap();
+                a.put("LED2",isChecked);
+                myRef.updateChildren(a);
             }
         });
         FAN.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    post("http://192.168.227.56/?fan_on", new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-                    });
-                }
-                else
-                {
-                    post("http://192.168.227.56/?fan_off", new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-                    });
-                }
+                Map a = new HashMap();
+                a.put("FANN",isChecked);
+                myRef.updateChildren(a);
             }
         });
         DOOR.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    post("http://192.168.227.56/?door_lock", new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-                    });
-                }
-                else
-                {
-                    post("http://192.168.227.56/?door_unlock", new Callback() {
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {}
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-                    });
-                }
+                Map a = new HashMap();
+                a.put("DOOR",!isChecked);
+                myRef.updateChildren(a);
             }
         });
-    }
-
-    Call post(String url, Callback callback) {
-
-        Request request = new Request.Builder()
-                .url(url)
-
-                .build();
-        Call call = client.newCall(request);
-        call.enqueue(callback);
-        return call;
     }
 
     public void goBackToListA(View v)
