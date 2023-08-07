@@ -1,50 +1,31 @@
 package com.example.smart_phone;
 
 import static android.content.ContentValues.TAG;
-import static android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG;
-import static android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
-
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import androidx.biometric.*;
-import androidx.biometric.BiometricPrompt;
-import android.hardware.biometrics.BiometricManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import static androidx.biometric.BiometricManager.Authenticators.*;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
-import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
-import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -70,7 +51,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -150,31 +130,32 @@ public class MainActivity extends AppCompatActivity {
         email = findViewById(R.id.ETLEmail);
         pass = findViewById(R.id.ETLPass);
 
-        //Initialize Biometric
+      //  Initialize Biometric
         Button biometricLoginButton = findViewById(R.id.biometric_login);
         biometricLoginButton.setOnClickListener(view -> {
 
         });
 
-        //Initializa Twitter Sign in
+       // Initializa Twitter Sign in
         Button twitterLoginbtn = findViewById(R.id.twitter_login_btn);
         twitterLoginbtn.setOnClickListener(view -> {
-            twitterLogin();
+           twitterLogin();
         });
 
-        //Initialize Google Sign in
+    //    Initialize Google Sign in
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(view -> {
 
             googleLogin();
         });
 
-        //Initialize FaceBook Sign In
+
+     //   Initialize FaceBook Sign In
         LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
         loginButton.setReadPermissions(Arrays.asList("email","public_profile","user_friends"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
+           public void onSuccess(LoginResult loginResult) {
                 Log.d("FB", "SUCCESS FACEBOOK LOGIN");
                 handleFacebookAccessToken(loginResult.getAccessToken());
                 // App code
@@ -186,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(FacebookException exception) {
+         public void onError(FacebookException exception) {
                 Log.w("FB","ERROR",exception);
                 // App code
             }

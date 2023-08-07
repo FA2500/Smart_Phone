@@ -11,77 +11,80 @@
         android:id="@+id/textView4"
         android:layout_width="192dp"
         android:layout_height="55dp"
-        android:layout_marginTop="24dp"
         android:layout_marginBottom="45dp"
         android:text="Register"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:fontFamily="@font/dela_gothic_one"
-        app:layout_constraintBottom_toTopOf="@+id/ETEmail"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.057" />
 
     <EditText
         android:id="@+id/ETEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="20dp"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
         android:padding="20dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        android:inputType="textEmailAddress"
-        android:hint="Email"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.176" />
 
     <EditText
         android:id="@+id/ETName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="20dp"
+        android:hint="Name"
+        android:inputType="textPersonName"
         android:padding="20dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        app:layout_constraintTop_toBottomOf="@+id/ETEmail" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ETEmail"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="-1dp" />
 
     <EditText
         android:id="@+id/ETPass"
-        android:hint="Password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_width="413dp"
+        android:layout_height="68dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_vpn_key_24"
         android:drawablePadding="20dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
         android:padding="20dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/ETName" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ETName"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/ETCPass"
-        android:layout_width="392dp"
-        android:layout_height="55dp"
+        android:layout_width="414dp"
+        android:layout_height="68dp"
         android:layout_marginTop="8dp"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_vpn_key_24"
@@ -94,7 +97,7 @@
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ETPass"
         app:layout_constraintVertical_bias="0.01" />
@@ -105,11 +108,11 @@
         android:layout_height="wrap_content"
         android:text="Go to Login"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/ETCPass"
-        app:layout_constraintHorizontal_bias="0.889"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.882"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETCPass"
-        app:layout_constraintVertical_bias="0.576" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.864" />
 
     <Button
         android:id="@+id/btnReg"
@@ -118,10 +121,10 @@
         android:layout_marginTop="76dp"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintEnd_toStartOf="@+id/btnGTL"
+        app:layout_constraintHorizontal_bias="0.338"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETCPass"
-        app:layout_constraintVertical_bias="0.389" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.842" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
